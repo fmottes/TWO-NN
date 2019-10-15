@@ -6,7 +6,7 @@
 import numpy as np
 
 
-def twonn_dimension(data):
+def twonn_dimension(data, return_xy=False):
     """
     Calculates intrinsic dimension of the provided data points with the TWO-NN algorithm.
     
@@ -15,12 +15,21 @@ def twonn_dimension(data):
     
     data : 2d array-like
         2d data matrix. Samples on rows and features on columns.
+
+    return_xy : bool (default=False)
+        Whether to return also the coordinate vectors used for the linear fit.
         
     -----------
     Returns:
     
     d : int
         Intrinsic dimension of the dataset according to TWO-NN.
+
+    x : 1d array (optional)
+        Array with the -log(mu) values.
+
+    y : 1d array (optional)
+        Array with the -log(F(mu_{sigma(i)})) values.
         
     -----------
     References:
@@ -39,10 +48,11 @@ def twonn_dimension(data):
     #mu = r2/r1 for each data point
     mu = []
     for i,x in enumerate(data):
+        
         dist = np.sort(np.sqrt(np.sum((x-data)**2, axis=1)))
-        dist = dist[dist>0][:3]
+        r1, r2 = dist[dist>0][:2]
 
-        mu.append((i+1,dist[1]/dist[0]))
+        mu.append((i+1,r2/r1))
         
 
     #permutation function
@@ -50,12 +60,12 @@ def twonn_dimension(data):
 
     mu = dict(mu)
 
-    #cdf F(mu_sigma(i))
+    #cdf F(mu_{sigma(i)})
     F_i = {}
     for i in mu:
         F_i[sigma_i[i]] = i/N
 
-    #fiting coordinates
+    #fitting coordinates
     x = np.log([mu[i] for i in sorted(mu.keys())])
     y = np.array([1-F_i[i] for i in sorted(mu.keys())])
 
@@ -68,5 +78,7 @@ def twonn_dimension(data):
     #fit line through origin to get the dimension
     d = np.linalg.lstsq(np.vstack([x, np.zeros(len(x))]).T, y, rcond=None)[0][0]
         
-        
-    return d
+    if return_xy:
+        return d, x, y
+    else: 
+        return d
