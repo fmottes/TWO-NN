@@ -11,13 +11,13 @@ Usage
 ---
 ```python
 import numpy as np
-from twonn import TWO_NN_dimension
+from TwoNN import twonn_dimension
 
 #mock dataset - 1000 samples with 500 features
 data = np.random.uniform(0,1,size=(1000,500))
 
 #calculate intrinsic dmension d
-d = TWO_NN_dimension(data)
+d = twonn_dimension(data)
 ```
 
 References
