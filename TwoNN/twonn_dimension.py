@@ -6,7 +6,7 @@
 import numpy as np
 
 
-def TWO_NN_dimension(data):
+def twonn_dimension(data):
     """
     Calculates intrinsic dimension of the provided data points with the TWO-NN algorithm.
     
