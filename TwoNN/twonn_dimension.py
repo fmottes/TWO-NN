@@ -39,8 +39,10 @@ def twonn_dimension(data):
     #mu = r2/r1 for each data point
     mu = []
     for i,x in enumerate(data):
-        dist = np.sort(np.sqrt(np.sum((x-data)**2, axis=1)))[:3]
-        mu.append((i+1,dist[2]/dist[1]))
+        dist = np.sort(np.sqrt(np.sum((x-data)**2, axis=1)))
+        dist = dist[dist>0][:3]
+
+        mu.append((i+1,dist[1]/dist[0]))
         
 
     #permutation function
