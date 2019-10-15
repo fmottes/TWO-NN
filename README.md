@@ -16,7 +16,7 @@ from TwoNN import twonn_dimension
 #mock dataset - 1000 samples with 500 features
 data = np.random.uniform(0,1,size=(1000,500))
 
-#calculate intrinsic dmension d
+#calculate intrinsic dimension d
 d = twonn_dimension(data)
 ```
 
